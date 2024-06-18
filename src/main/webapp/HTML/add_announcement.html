@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggiungi Annuncio</title>
+    <link rel="stylesheet" href="../CSS/add_announcement.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClDEUMLEv29dY81d5Y_ERD9G57I4WjFxY&callback=initMap" async defer></script>
+    <script src="../JS/map.js" defer></script>
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">Immobiliare</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="immobili.html">Proprietà</a></li>
+            <li><a href="contatti.html">Contatti</a></li>
+            <li><a href="accesso.html">Utente</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <section id="add-ad" class="auth-section">
+        <div class="form-container">
+            <h2>Aggiungi Annuncio</h2>
+            <form id="add-ad-form" class="auth-form">
+                <div class="form-group">
+                    <label for="title">Titolo</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="type">Tipo di Immobile</label>
+                    <select id="type" name="type" required>
+                        <option value="" disabled selected>Seleziona un tipo</option>
+                        <option value="appartamento">Appartamento</option>
+                        <option value="villa">Villa</option>
+                        <option value="box_auto">Box Auto</option>
+                        <option value="terreno_edificabile">Terreno Edificabile</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="price">Prezzo</label>
+                    <input type="number" id="price" name="price" required>
+                </div>
+                <div class="form-group">
+                    <label for="image">Immagine</label>
+                    <input type="file" id="image" name="image" accept="image/*" multiple required>
+                </div>
+                <div class="form-group">
+                    <label>Posizione</label>
+                    <div id="map" style="height: 400px; width: 100%;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descrizione</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                </div>
+                <button type="submit">Pubblica Annuncio</button>
+            </form>
+        </div>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 Immobiliare. Tutti i diritti riservati.</p>
+</footer>
+</body>
+</html>

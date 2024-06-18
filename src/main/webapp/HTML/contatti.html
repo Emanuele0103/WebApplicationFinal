@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatti</title>
+    <link rel="stylesheet" href="../CSS/contatti.css">
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">Immobiliare</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="immobili.html">Proprietà</a></li>
+            <li><a href="contatti.html">Contatti</a></li>
+            <li><a href="accesso.html">Accedi</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <section class="contact-section">
+        <h2>Contattaci</h2>
+        <div class="contact-info">
+            <p><strong>Indirizzo:</strong> Via Pietro Bucci, 87036 Arcavacata, Italia</p>
+            <p><strong>Telefono:</strong> +39 06 1234567</p>
+            <p><strong>Email:</strong> info@immobiliare.it</p>
+        </div>
+        <form class="contact-form" action="#" method="POST">
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Messaggio</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit">Invia</button>
+        </form>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 Immobiliare. Tutti i diritti riservati.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accesso / Registrazione</title>
+    <link rel="stylesheet" href="../CSS/accesso.css">
+    <script src="../JS/accesso.js" defer></script>
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">Immobiliare</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="immobili.html">Proprietà</a></li>
+            <li><a href="contatti.html">Contatti</a></li>
+            <li class="user-menu">
+                <a href="accesso.html" id="user-button">Accedi</a>
+                <ul id="user-dropdown" class="dropdown-menu">
+                    <li><a href="add_announcement.html">Aggiungi Annuncio</a></li>
+                    <li><a href="my-announcements.html">I miei Annunci</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <section id="auth-section" class="auth-section">
+        <div class="form-container">
+            <div class="form-tab">
+                <button id="login-tab" class="active">Login</button>
+                <button id="register-tab">Registrazione</button>
+            </div>
+            <form id="login-form" class="auth-form visible">
+                <h2>Accesso</h2>
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="login-password" required>
+                </div>
+                <button type="submit" id="login-submit">Accedi</button>
+            </form>
+            <form id="register-form" class="auth-form hidden" method="post" action="doRegister">
+                <h2>Registrazione</h2>
+                <div class="form-group">
+                    <label for="type1">Ruolo</label>
+                    <select id="type1" name="tipo" required>
+                        <option value="" disabled selected>Seleziona un Ruolo</option>
+                        <option value="1">Amministratore</option>
+                        <option value="2">Acquirente</option>
+                        <option value="3">Venditore</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="register-name">Nome</label>
+                    <input type="text" id="register-name" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" name="password" required>
+                </div>
+                <button type="submit">Registrati</button>
+            </form>
+        </div>
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 Immobiliare. Tutti i diritti riservati.</p>
+</footer>
+</body>
+</html>

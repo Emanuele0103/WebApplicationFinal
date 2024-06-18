@@ -1,0 +1,340 @@
+/* my-ads.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin-left: 1rem;
+    position: relative;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li .dropdown-menu li {
+    padding: 12px 16px;
+}
+
+nav ul li .dropdown-menu li a {
+    color: #333;
+    text-decoration: none;
+}
+
+nav ul li:hover .dropdown-menu {
+    display: block;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+
+/* Styles for "I Miei Annunci" section */
+.my-ads-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin: 20px;
+    margin-top: 80px; /* Adjust for fixed header */
+}
+
+.ads-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* my-ads.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin-left: 1rem;
+    position: relative;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 200px;
+}
+
+nav ul li .dropdown-menu li {
+    padding: 12px 16px;
+}
+
+nav ul li .dropdown-menu li a {
+    color: #333;
+    text-decoration: none;
+}
+
+nav ul li:hover .dropdown-menu {
+    display: block;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+
+/* Styles for "I Miei Annunci" section */
+.my-ads-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin: 20px;
+    margin-top: 80px; /* Adjust for fixed header */
+}
+
+.ads-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* my-ads.css */
+
+/* ... Existing styles ... */
+
+.ad-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    flex: 1 1 calc(100% - 20px);
+    box-sizing: border-box;
+    display: flex;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ad-item:hover {
+    background-color: #f0f0f0;
+}
+
+.ad-item img {
+    max-width: 30%;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.ad-item .ad-details {
+    flex: 1;
+}
+
+.ad-item h3 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+}
+
+.ad-item p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.modal-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.carousel-button {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 0.5rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+}
+
+.carousel-button.prev {
+    left: 10px;
+}
+
+.carousel-button.next {
+    right: 10px;
+}
+
+.price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007BFF;
+    margin-top: 10px;
+}
+
+.purchase-button {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background-color: #007BFF;
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.purchase-button:hover {
+    background-color: #0056b3;
+}
+

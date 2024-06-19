@@ -11,4 +11,20 @@ public class HomeController {
     public String home() {
         return "index";
     }
+
+    @GetMapping("/immobili")
+    public String properties() {
+        return "immobili";
+    }
+
+    @GetMapping("/contatti")
+    public String contact() {
+        return "contatti";
+    }
+
+    @GetMapping("/accesso")
+    public String login() {
+        return "accesso";
+    }
+
 }

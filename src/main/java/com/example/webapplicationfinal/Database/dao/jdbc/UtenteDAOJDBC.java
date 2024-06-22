@@ -3,6 +3,7 @@ package com.example.webapplicationfinal.Database.dao.jdbc;
 import com.example.webapplicationfinal.Database.DBSource;
 import com.example.webapplicationfinal.Model.Utente;
 import com.example.webapplicationfinal.Database.dao.UtenteDAO;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,17 +13,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UtenteDAOJDBC implements UtenteDAO{
-    private DBSource dbSource;
+@Repository
+public class UtenteDAOJDBC implements UtenteDAO {
+    private final DBSource dbSource;
 
     public UtenteDAOJDBC(DBSource dbSource) {
         this.dbSource = dbSource;
     }
 
+
     @Override
     public void save(Utente utente) {
         try (Connection conn = dbSource.getConnection()) {
-            String query = "INSERT INTO utente (nome, cognome, email, password, tipo) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO utenti (nome, cognome, email, password, tipo) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             st.setString(1, utente.getNome());
             st.setString(2, utente.getCognome());
@@ -43,7 +46,7 @@ public class UtenteDAOJDBC implements UtenteDAO{
     public Utente findByPrimaryKey(Long id) {
         Utente utente = null;
         try (Connection conn = dbSource.getConnection()) {
-            String query = "SELECT * FROM utente WHERE id = ?";
+            String query = "SELECT * FROM utenti WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, id);
             ResultSet rs = st.executeQuery();
@@ -66,7 +69,7 @@ public class UtenteDAOJDBC implements UtenteDAO{
     public List<Utente> findAll() {
         List<Utente> utenti = new ArrayList<>();
         try (Connection conn = dbSource.getConnection()) {
-            String query = "SELECT * FROM utente";
+            String query = "SELECT * FROM utenti";
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
@@ -88,7 +91,7 @@ public class UtenteDAOJDBC implements UtenteDAO{
     @Override
     public void update(Utente utente) {
         try (Connection conn = dbSource.getConnection()) {
-            String query = "UPDATE utente SET nome = ?, cognome = ?, email = ?, password = ?, tipo = ? WHERE id = ?";
+            String query = "UPDATE utenti SET nome = ?, cognome = ?, email = ?, password = ?, tipo = ? WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(query);
             st.setString(1, utente.getNome());
             st.setString(2, utente.getCognome());
@@ -105,7 +108,7 @@ public class UtenteDAOJDBC implements UtenteDAO{
     @Override
     public void delete(Utente utente) {
         try (Connection conn = dbSource.getConnection()) {
-            String query = "DELETE FROM utente WHERE id = ?";
+            String query = "DELETE FROM utenti WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(query);
             st.setLong(1, utente.getID_Utente());
             st.executeUpdate();

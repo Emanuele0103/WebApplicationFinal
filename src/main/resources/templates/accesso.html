@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accesso / Registrazione</title>
     <link rel="stylesheet" href="/css/accesso.css">
-    <script src="/css/JS/accesso.js" defer></script>
+    <!-- Includi jQuery prima del tuo script -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Includi il tuo script JS -->
+    <script src="/css/js/accesso.js" defer></script>
 </head>
 <body>
 <header>
@@ -18,8 +21,8 @@
             <li class="user-menu">
                 <a href="accesso" id="user-button">Accedi</a>
                 <ul id="user-dropdown" class="dropdown-menu">
-                    <li><a href="add_announcement">Aggiungi Annuncio</a></li>
-                    <li><a href="my-announcements">I miei Annunci</a></li>
+                    <li><a href="add_announcement" class="restricted" data-role="3">Aggiungi Annuncio</a></li>
+                    <li><a href="my-announcements" class="restricted" data-role="3">I miei Annunci</a></li>
                 </ul>
             </li>
         </ul>
@@ -32,7 +35,7 @@
                 <button id="login-tab" class="active">Login</button>
                 <button id="register-tab">Registrazione</button>
             </div>
-            <form id="login-form" class="auth-form visible">
+            <form id="login-form" class="auth-form visible" method="POST" action="auth/doLogin">
                 <h2>Accesso</h2>
                 <div class="form-group">
                     <label for="login-email">Email</label>
@@ -44,7 +47,7 @@
                 </div>
                 <button type="submit" id="login-submit">Accedi</button>
             </form>
-            <form id="register-form" class="auth-form hidden" method="post" action="doRegister">
+            <form id="register-form" class="auth-form hidden" method="post" action="auth/doRegister">
                 <h2>Registrazione</h2>
                 <div class="form-group">
                     <label for="type1">Ruolo</label>
@@ -60,6 +63,10 @@
                     <input type="text" id="register-name" name="nome" required>
                 </div>
                 <div class="form-group">
+                    <label for="register-cognome">Cognome</label>
+                    <input type="text" id="register-cognome" name="cognome" required>
+                </div>
+                <div class="form-group">
                     <label for="register-email">Email</label>
                     <input type="email" id="register-email" name="email" required>
                 </div>
@@ -67,7 +74,7 @@
                     <label for="register-password">Password</label>
                     <input type="password" id="register-password" name="password" required>
                 </div>
-                <button type="submit">Registrati</button>
+                <button type="submit" id="register-submit">Registrati</button>
             </form>
         </div>
     </section>

@@ -1,16 +1,21 @@
 package com.example.webapplicationfinal.Database;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+@Component
 public class DBSource {
     private String uri;
     private String username;
     private String password;
 
-    public DBSource(String uri, String username, String password) {
-        super();
+    public DBSource(@Value("${db.uri}") String uri,
+                    @Value("${db.username}") String username,
+                    @Value("${db.password}") String password) {
         this.uri = uri;
         this.username = username;
         this.password = password;

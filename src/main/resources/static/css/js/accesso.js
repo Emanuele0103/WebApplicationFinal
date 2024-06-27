@@ -70,7 +70,7 @@ $(document).ready(function() {
 
         // Crea un oggetto con i dati da inviare al server per il login
         var dataToSend = {
-            username: email,
+            email: email,
             password: password
         };
 

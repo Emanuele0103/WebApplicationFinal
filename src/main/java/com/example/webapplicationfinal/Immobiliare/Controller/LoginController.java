@@ -4,32 +4,44 @@ import com.example.webapplicationfinal.Database.dao.jdbc.UtenteDAOJDBC;
 import com.example.webapplicationfinal.Model.Utente;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/auth")
 public class LoginController {
 
     private final UtenteDAOJDBC utenteDao;
+    private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
 
     @Autowired
     public LoginController(UtenteDAOJDBC utenteDao) {
         this.utenteDao = utenteDao;
     }
 
+    @PostMapping("/doLogin")
+    @ResponseBody
+    public boolean login(HttpSession session, @RequestParam String email, @RequestParam String password) {
+        LOGGER.info("Login attempt with email: " + email);
 
-    @PostMapping("doLogin")
-    public String login(HttpSession session, @RequestParam String username, @RequestParam String password) {
-        System.out.println(username);
-        System.out.println(password);
+        Utente utente = utenteDao.findByEmail(email);
 
-        if (loginOk(username, password)) {
-            session.setAttribute("usernameLogged", username);
-            return "index";
-        } else {
-            return "loginError";
+        if (utente != null) {
+            // Verifica la password hashata
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            if (passwordEncoder.matches(password, utente.getPassword())) {
+                // Login avvenuto con successo, crea la sessione utente
+                session.setAttribute("usernameLogged", email);
+                session.setAttribute("userRole", utente.getTipo());
+                LOGGER.info("Login successful for username: " + email);
+                return true;
+            }
         }
+
+        LOGGER.info("Login failed for username: " + email);
+        return false;
     }
 
     @PostMapping("doRegister")
@@ -40,16 +52,17 @@ public class LoginController {
                            @RequestParam String email,
                            @RequestParam String password,
                            @RequestParam String tipo) {
-        System.out.println(nome);
-        System.out.println(email);
-        System.out.println(password);
-        System.out.println(tipo);
+        LOGGER.info("Registration attempt with email: " + email);
+
+
+        // Hash della password con BCrypt
+        String hashedPassword = new BCryptPasswordEncoder().encode(password);
 
         Utente nuovoUtente = new Utente();
         nuovoUtente.setNome(nome);
         nuovoUtente.setCognome(cognome);
         nuovoUtente.setEmail(email);
-        nuovoUtente.setPassword(password);
+        nuovoUtente.setPassword(hashedPassword); // Salva la password hashed
         nuovoUtente.setTipo(tipo);
 
         utenteDao.save(nuovoUtente);
@@ -64,13 +77,4 @@ public class LoginController {
         session.invalidate();
         return "index";
     }
-
-    private boolean loginOk(String username, String password) {
-        // Implementa la logica di verifica del login (ad esempio, verifica i dati nel database)
-        if (username.equals("admin") && password.equals("admin")) {
-            return true;
-        }
-        return false;
-    }
-
 }

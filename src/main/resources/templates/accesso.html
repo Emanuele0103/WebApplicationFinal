@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/accesso.css">
     <!-- Includi jQuery prima del tuo script -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bcryptjs/dist/bcrypt.min.js"></script>
     <!-- Includi il tuo script JS -->
     <script src="/css/js/accesso.js" defer></script>
 </head>
@@ -20,7 +21,7 @@
             <li><a href="contatti">Contatti</a></li>
             <li class="user-menu">
                 <a href="accesso" id="user-button">Accedi</a>
-                <ul id="user-dropdown" class="dropdown-menu">
+                <ul id="user-dropdown" class="dropdown-menu" style="display: none;">
                     <li><a href="add_announcement" class="restricted" data-role="3">Aggiungi Annuncio</a></li>
                     <li><a href="my-announcements" class="restricted" data-role="3">I miei Annunci</a></li>
                 </ul>

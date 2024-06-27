@@ -10,8 +10,8 @@ public interface UtenteDAO {
     List<Utente> findAll();  // Retrieve all
     void update(Utente utente);  // Update
     void delete(Utente utente);  // Delete
+    Utente findByEmail(String username);
 
     // Metodi specifici
-    //Utente findByEmail(String email);
     List<Utente> findByNome(String nome);
 }

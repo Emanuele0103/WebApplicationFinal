@@ -4,6 +4,8 @@ import com.example.webapplicationfinal.Database.dao.jdbc.UtenteDAOJDBC;
 import com.example.webapplicationfinal.Model.Utente;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,26 +26,24 @@ public class LoginController {
 
     @PostMapping("/doLogin")
     @ResponseBody
-    public boolean login(HttpSession session, @RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<String> login(HttpSession session, @RequestParam String email, @RequestParam String password) {
         LOGGER.info("Login attempt with email: " + email);
 
         Utente utente = utenteDao.findByEmail(email);
 
         if (utente != null) {
-            // Verifica la password hashata
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if (passwordEncoder.matches(password, utente.getPassword())) {
-                // Login avvenuto con successo, crea la sessione utente
                 session.setAttribute("usernameLogged", email);
                 session.setAttribute("userRole", utente.getTipo());
                 session.setAttribute("userId", utente.getID_Utente());
                 LOGGER.info("Login successful for username: " + email);
-                return true;
+                return ResponseEntity.ok("/profile"); // URL per la pagina profilo
             }
         }
 
         LOGGER.info("Login failed for username: " + email);
-        return false;
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
     }
 
     @PostMapping("/doRegister")
@@ -73,12 +73,6 @@ public class LoginController {
         session.setAttribute("userId", nuovoUtente.getID_Utente());
 
         return "Registrazione avvenuta con successo";
-    }
-
-    @GetMapping("/doLogout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "index";
     }
 
     // Endpoint per ottenere i dettagli dell'utente loggato

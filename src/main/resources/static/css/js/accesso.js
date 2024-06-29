@@ -70,42 +70,34 @@ $(document).ready(function() {
     $('#login-submit').click(function(event) {
         event.preventDefault(); // Evita il comportamento predefinito del form
 
-        // Ottieni i valori dai campi del modulo di login
         var email = $('#login-email').val();
         var password = $('#login-password').val();
 
-        // Crea un oggetto con i dati da inviare al server per il login
         var dataToSend = {
             email: email,
             password: password
         };
 
-        // Effettua una richiesta AJAX al server per il login
         $.ajax({
             url: 'auth/doLogin', // URL del tuo endpoint per il login
             method: 'POST',
             data: dataToSend, // Dati da inviare al server
             success: function(response) {
-                // Gestisci la risposta del server in caso di successo
                 console.log(response);
-                alert('Login effettuato con successo!'); // Mostra un messaggio di successo o errore
-
-                $('#login-email').val('');
-                $('#login-password').val('');
-                updateUIAfterLogin(); // Aggiorna l'interfaccia dopo il login
+                window.location.href = response; // Reindirizza alla pagina profilo
             },
             error: function(xhr, status, error) {
-                // Gestisci gli errori
-                console.error(error);
+                console.error('Errore durante il login:', error);
                 alert('Errore durante il login. Si prega di riprovare.');
             }
         });
     });
 
+
     // Funzione per aggiornare l'interfaccia utente dopo il login
     function updateUIAfterLogin() {
         $('#user-button').text('Profilo').removeAttr('href'); // Cambia il testo del bottone "Accedi" in "Profilo"
-        $('#user-button').click(function(event) {
+        $('#user-button').off('click').on('click', function(event) {
             event.preventDefault();
             $('#user-dropdown').toggle(); // Mostra o nasconde il menu utente
             $('#profile-page').toggle(); // Mostra o nasconde la sezione del profilo
@@ -114,23 +106,50 @@ $(document).ready(function() {
 
     // Funzione per verificare e aggiornare lo stato di login
     function checkAndUpdateLoginStatus() {
-        // Verifica lo stato di login
-        $.ajax({
-            url: 'auth/checkLogin', // Assicurati che corrisponda al percorso definito nel controller
-            method: 'GET',
-            success: function(response) {
-                console.log('Risposta del server per checkLogin:', response);
-                if (response.loggedIn) {
-                    // Se l'utente è loggato, aggiorna l'interfaccia utente
-                    updateUIAfterLogin();
+        var sessionToken = getSessionCookie();
+        if (sessionToken) {
+            // Verifica lo stato di login con il token di sessione
+            $.ajax({
+                url: 'auth/checkLogin',
+                method: 'POST',
+                data: {sessionToken: sessionToken},
+                success: function (response) {
+                    console.log('Risposta del server per checkLogin:', response);
+                    if (response.loggedIn) {
+                        // Se l'utente è loggato, aggiorna l'interfaccia utente
+                        updateUIAfterLogin();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Errore durante la verifica dello stato di login:', error);
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('Errore durante la verifica dello stato di login:', error);
+            });
+        }
+    }
+
+    // Funzione per impostare il cookie di sessione
+    function setSessionCookie(token) {
+        document.cookie = "sessionToken=" + token + "; path=/";
+    }
+
+
+    // Funzione per ottenere il valore del cookie di sessione
+    function getSessionCookie() {
+        var name = "sessionToken=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
             }
-        });
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
     }
 
     // Verifica lo stato di login quando la pagina è caricata
     checkAndUpdateLoginStatus();
-});
+    });

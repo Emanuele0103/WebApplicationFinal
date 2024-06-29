@@ -1,6 +1,8 @@
 $(document).ready(function() {
     // Funzione per gestire il click sul tab di registrazione
-    $('#register-tab').click(function() {
+    $('#register-tab').click(function(event) {
+        event.preventDefault(); // Evita il comportamento predefinito del link
+
         $('#login-tab').removeClass('active');
         $('#register-tab').addClass('active');
         $('#login-form').removeClass('visible').addClass('hidden');
@@ -8,7 +10,9 @@ $(document).ready(function() {
     });
 
     // Funzione per gestire il click sul tab di login
-    $('#login-tab').click(function() {
+    $('#login-tab').click(function(event) {
+        event.preventDefault(); // Evita il comportamento predefinito del link
+
         $('#login-tab').addClass('active');
         $('#register-tab').removeClass('active');
         $('#login-form').removeClass('hidden').addClass('visible');
@@ -17,7 +21,7 @@ $(document).ready(function() {
 
     // Gestione della registrazione
     $('#register-submit').click(function(event) {
-        event.preventDefault(); // Evita il comportamento di default del form
+        event.preventDefault(); // Evita il comportamento predefinito del form
 
         // Ottieni i valori dai campi del modulo di registrazione
         var nome = $('#register-name').val();
@@ -43,14 +47,17 @@ $(document).ready(function() {
             success: function(response) {
                 // Gestisci la risposta del server in caso di successo
                 console.log(response);
-                alert(response); // Mostra un messaggio di successo o errore
-
-                $('#register-name').val('');
-                $('#register-cognome').val('');
-                $('#register-email').val('');
-                $('#register-password').val('');
-                $('#type1').val('');
-                // Puoi aggiungere qui del codice per gestire la risposta, ad esempio reindirizzare l'utente
+                if (response.success) {
+                    alert('Registrazione avvenuta con successo!');
+                    $('#register-name').val('');
+                    $('#register-cognome').val('');
+                    $('#register-email').val('');
+                    $('#register-password').val('');
+                    $('#type1').val('');
+                    $('#login-tab').click(); // Passa al tab di login
+                } else {
+                    alert('Errore nella registrazione: ' + response.message);
+                }
             },
             error: function(xhr, status, error) {
                 // Gestisci gli errori
@@ -60,9 +67,8 @@ $(document).ready(function() {
         });
     });
 
-    // Funzione per gestire il login (opzionale, se implementato)
     $('#login-submit').click(function(event) {
-        event.preventDefault(); // Evita il comportamento di default del form
+        event.preventDefault(); // Evita il comportamento predefinito del form
 
         // Ottieni i valori dai campi del modulo di login
         var email = $('#login-email').val();
@@ -86,8 +92,7 @@ $(document).ready(function() {
 
                 $('#login-email').val('');
                 $('#login-password').val('');
-
-                // Puoi aggiungere qui del codice per gestire la risposta, ad esempio reindirizzare l'utente
+                updateUIAfterLogin(); // Aggiorna l'interfaccia dopo il login
             },
             error: function(xhr, status, error) {
                 // Gestisci gli errori
@@ -97,20 +102,35 @@ $(document).ready(function() {
         });
     });
 
-    // Codice per simulare l'autenticazione e il controllo del ruolo dell'utente
-    const userRole = 3; // Sostituisci con la logica reale per ottenere il ruolo dell'utente dal backend
+    // Funzione per aggiornare l'interfaccia utente dopo il login
+    function updateUIAfterLogin() {
+        $('#user-button').text('Profilo').removeAttr('href'); // Cambia il testo del bottone "Accedi" in "Profilo"
+        $('#user-button').click(function(event) {
+            event.preventDefault();
+            $('#user-dropdown').toggle(); // Mostra o nasconde il menu utente
+            $('#profile-page').toggle(); // Mostra o nasconde la sezione del profilo
+        });
+    }
 
-    if (userRole !== null) {
-        $('#user-button').text('Profilo').attr('href', 'profile'); // Aggiorna il link al profilo dell'utente
-        const restrictedLinks = $('.restricted');
-        restrictedLinks.each(function() {
-            if (parseInt($(this).data('role')) === userRole) {
-                $(this).show(); // Mostra i link riservati per il ruolo corrente
-            } else {
-                $(this).hide(); // Nasconde i link per gli altri ruoli
+    // Funzione per verificare e aggiornare lo stato di login
+    function checkAndUpdateLoginStatus() {
+        // Verifica lo stato di login
+        $.ajax({
+            url: 'auth/checkLogin', // Assicurati che corrisponda al percorso definito nel controller
+            method: 'GET',
+            success: function(response) {
+                console.log('Risposta del server per checkLogin:', response);
+                if (response.loggedIn) {
+                    // Se l'utente è loggato, aggiorna l'interfaccia utente
+                    updateUIAfterLogin();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Errore durante la verifica dello stato di login:', error);
             }
         });
-    } else {
-        $('#user-dropdown').hide(); // Nasconde il menu utente se non autenticato
     }
+
+    // Verifica lo stato di login quando la pagina è caricata
+    checkAndUpdateLoginStatus();
 });

@@ -27,4 +27,14 @@ public class HomeController {
         return "accesso";
     }
 
+    @GetMapping("/add_announcement")
+    public String add_announcement() {
+        return "add_announcement";
+    }
+
+    @GetMapping("/my-announcement")
+    public String my_announcement() {
+        return "my-announcement";
+    }
+
 }

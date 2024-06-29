@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.logging.Logger;
 
 @Controller
@@ -35,6 +36,7 @@ public class LoginController {
                 // Login avvenuto con successo, crea la sessione utente
                 session.setAttribute("usernameLogged", email);
                 session.setAttribute("userRole", utente.getTipo());
+                session.setAttribute("userId", utente.getID_Utente());
                 LOGGER.info("Login successful for username: " + email);
                 return true;
             }
@@ -44,7 +46,7 @@ public class LoginController {
         return false;
     }
 
-    @PostMapping("doRegister")
+    @PostMapping("/doRegister")
     @ResponseBody
     public String register(HttpSession session,
                            @RequestParam String nome,
@@ -53,7 +55,6 @@ public class LoginController {
                            @RequestParam String password,
                            @RequestParam String tipo) {
         LOGGER.info("Registration attempt with email: " + email);
-
 
         // Hash della password con BCrypt
         String hashedPassword = new BCryptPasswordEncoder().encode(password);
@@ -68,13 +69,32 @@ public class LoginController {
         utenteDao.save(nuovoUtente);
 
         session.setAttribute("usernameLogged", email);
+        session.setAttribute("userRole", tipo);
+        session.setAttribute("userId", nuovoUtente.getID_Utente());
 
         return "Registrazione avvenuta con successo";
     }
 
-    @GetMapping("doLogout")
+    @GetMapping("/doLogout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "index";
+    }
+
+    // Endpoint per ottenere i dettagli dell'utente loggato
+    @GetMapping("/userDetails")
+    @ResponseBody
+    public Utente getUserDetails(HttpSession session) {
+        String email = (String) session.getAttribute("usernameLogged");
+        if (email != null) {
+            return utenteDao.findByEmail(email);
+        }
+        return null;
+    }
+    @GetMapping("/checkLogin")
+    @ResponseBody
+    public boolean checkLogin(HttpSession session) {
+        String usernameLogged = (String) session.getAttribute("usernameLogged");
+        return usernameLogged != null;
     }
 }

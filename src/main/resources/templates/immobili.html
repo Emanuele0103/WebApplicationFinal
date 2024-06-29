@@ -91,4 +91,27 @@
   <p>&copy; 2024 Immobiliare. Tutti i diritti riservati.</p>
 </footer>
 </body>
+<script>
+  $(document).ready(function() {
+    // Verifica lo stato di login e aggiorna il pulsante
+    function checkAndUpdateLoginStatus() {
+      $.ajax({
+        url: 'auth/checkLogin', // URL per verificare lo stato di login
+        method: 'GET',
+        success: function(response) {
+          if (response) {
+            // Se l'utente è loggato, cambia il testo del bottone "Accedi" in "Profilo"
+            $('#user-button').text('Profilo');
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Errore durante la verifica dello stato di login:', error);
+        }
+      });
+    }
+
+    checkAndUpdateLoginStatus(); // Chiamata alla funzione al caricamento della pagina
+  });
+</script>
+
 </html>

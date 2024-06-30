@@ -135,6 +135,32 @@ public class AnnunciDAOJDBC implements AnnunciDAO {
 
     @Override
     public List<Annuncio> findByUtenteId(Long utenteId) {
-        return List.of();
+        List<Annuncio> annunci = new ArrayList<>();
+        try (Connection conn = dbSource.getConnection()) {
+            String query = "SELECT * FROM annuncio WHERE utente_id = ?";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, utenteId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Annuncio annuncio = new Annuncio();
+                annuncio.setId(rs.getLong("id"));
+                annuncio.setTitolo(rs.getString("titolo"));
+                annuncio.setTipoDiImmobile(rs.getString("tipo_di_immobile"));
+                annuncio.setDescrizione(rs.getString("descrizione"));
+                annuncio.setPrezzo(rs.getInt("prezzo"));
+                annuncio.setUtenteId(rs.getLong("utente_id"));
+                Array imagesArray = rs.getArray("images");
+                if (imagesArray != null) {
+                    String[] images = (String[]) imagesArray.getArray();
+                    annuncio.setImages(new ArrayList<>(List.of(images)));
+                }
+                annuncio.setPosition(rs.getString("position"));
+                annunci.add(annuncio);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return annunci;
     }
+
 }

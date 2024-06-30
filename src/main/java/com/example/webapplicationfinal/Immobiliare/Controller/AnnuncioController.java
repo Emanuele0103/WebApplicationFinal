@@ -16,13 +16,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
 @Controller
-@RequestMapping("/annunci")
+@RequestMapping("/announcements")
 public class AnnuncioController {
 
     private final AnnunciDAOJDBC annunciDao;
@@ -36,14 +37,14 @@ public class AnnuncioController {
         this.annunciDao = annunciDao;
     }
 
-    @PostMapping("/aggiungi")
+    @PostMapping("/addAnnouncements")
     @ResponseBody
     public ResponseEntity<String> aggiungiAnnuncio(HttpSession session,
                                                    @RequestParam String titolo,
                                                    @RequestParam String tipoDiImmobile,
                                                    @RequestParam String descrizione,
                                                    @RequestParam int prezzo,
-                                                   @RequestParam String position, // Modifica qui
+                                                   @RequestParam String position,
                                                    @RequestParam("images") MultipartFile[] files) {
         LOGGER.info("Aggiunta di un nuovo annuncio: " + titolo);
 
@@ -60,22 +61,21 @@ public class AnnuncioController {
         nuovoAnnuncio.setPrezzo(prezzo);
         nuovoAnnuncio.setUtenteId(utenteId);
         nuovoAnnuncio.setImages(new ArrayList<>());
-        nuovoAnnuncio.setPosition(position); // Salva solo la posizione
+        nuovoAnnuncio.setPosition(position);
 
         try {
-            // Salvataggio delle immagini sul file system
             for (MultipartFile file : files) {
                 String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-                Path uploadPath = Paths.get(uploadDir);
+                Path uploadPath = Paths.get("src/main/resources/static/css/images"); // Percorso aggiornato
 
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
 
                 Path filePath = uploadPath.resolve(fileName);
-                Files.copy(file.getInputStream(), filePath);
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-                nuovoAnnuncio.getImages().add(filePath.toString());
+                nuovoAnnuncio.getImages().add(fileName); // Aggiungi solo il nome del file
             }
 
             annunciDao.save(nuovoAnnuncio);
@@ -87,7 +87,8 @@ public class AnnuncioController {
         }
     }
 
-    @PutMapping("/{id}/modifica")
+
+    @PutMapping("/{id}/modified")
     @ResponseBody
     public ResponseEntity<String> modificaAnnuncio(@PathVariable Long id,
                                                    @RequestParam String titolo,
@@ -136,6 +137,19 @@ public class AnnuncioController {
         }
     }
 
+    @GetMapping("/myAnnouncements")
+    @ResponseBody
+    public List<Annuncio> mieiAnnunci(HttpSession session) {
+        Long utenteId = (Long) session.getAttribute("userId");
+        if (utenteId == null) {
+            LOGGER.warning("Utente non autenticato durante il recupero dei propri annunci");
+            return new ArrayList<>();
+        }
+        return annunciDao.findByUtenteId(utenteId);
+    }
+
+
+
     @GetMapping("/lista")
     @ResponseBody
     public List<Annuncio> listaAnnunci() {
@@ -148,7 +162,7 @@ public class AnnuncioController {
         return annunciDao.findByPrimaryKey(id);
     }
 
-    @DeleteMapping("/{id}/elimina")
+    @DeleteMapping("/delete/{id}")
     @ResponseBody
     public ResponseEntity<String> eliminaAnnuncio(@PathVariable Long id) {
         LOGGER.info("Eliminazione dell'annuncio con ID: " + id);
@@ -159,8 +173,20 @@ public class AnnuncioController {
             return ResponseEntity.notFound().build();
         }
 
-        annunciDao.delete(annuncio);
+        try {
+            // Elimina le immagini associate all'annuncio dal filesystem
+            for (String imageName : annuncio.getImages()) {
+                Path imagePath = Paths.get(uploadDir).resolve(imageName);
+                Files.deleteIfExists(imagePath);
+            }
 
-        return ResponseEntity.ok("Annuncio eliminato con successo");
+            annunciDao.delete(annuncio);
+
+            return ResponseEntity.ok("Annuncio eliminato con successo");
+        } catch (IOException ex) {
+            LOGGER.severe("Impossibile eliminare le immagini associate all'annuncio " + id + ". Errore: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione delle immagini associate");
+        }
     }
+
 }

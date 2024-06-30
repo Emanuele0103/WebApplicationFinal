@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I Miei Annunci</title>
     <link rel="stylesheet" href="/css/my_announcements.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/css/js/my-announcements.js"></script>
 </head>
 <body>
 <header>
@@ -12,76 +14,22 @@
         <div class="logo">Immobiliare</div>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="immobili">Proprietà</a></li>
-            <li><a href="contatti">Contatti</a></li>
-            <li><a href="accesso">Profilo</a></li>
+            <li><a href="/immobili">Proprietà</a></li>
+            <li><a href="/contatti">Contatti</a></li>
+            <li><a href="/accesso">Profilo</a></li>
         </ul>
     </nav>
 </header>
 <main>
     <section class="my-ads-section">
         <h2>I Miei Annunci</h2>
-        <div class="ads-list">
-            <div class="ad-item" onclick="openModal('modal1')">
-                <img src="/css/images/property3.jpg" alt="Annuncio 1">
-                <div class="ad-details">
-                    <h3>Appartamento in centro</h3>
-                    <p>3 camere, 2 bagni, 120m²</p>
-                    <p>Un bellissimo appartamento situato nel cuore della città, vicino a tutti i servizi principali.</p>
-                </div>
-            </div>
-            <div class="ad-item" onclick="openModal('modal2')">
-                <img src="/css/images/property2.jpg" alt="Annuncio 2">
-                <div class="ad-details">
-                    <h3>Villa moderna</h3>
-                    <p>5 camere, 3 bagni, 250m²</p>
-                    <p>Una splendida villa con giardino e piscina, perfetta per una famiglia numerosa.</p>
-                </div>
-            </div>
-            <!-- Add more ad items and corresponding modals as needed -->
+        <div class="ads-list" id="ads-list">
+            <!-- Qui verranno inseriti dinamicamente gli annunci -->
         </div>
     </section>
-
-    <!-- Modal for Ad 1 -->
-    <div id="modal1" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal1')">&times;</span>
-            <h2>Appartamento in centro</h2>
-            <div class="carousel">
-                <button class="carousel-button prev" onclick="prevSlide('carousel1')">&#10094;</button>
-                <div class="carousel-inner" id="carousel1">
-                    <img src="/css/images/property1.jpg" alt="Foto 1">
-                    <img src="/css/images/property2.jpg" alt="Foto 2">
-                    <img src="/css/images/property3.jpg" alt="Foto 3">
-                </div>
-                <button class="carousel-button next" onclick="nextSlide('carousel1')">&#10095;</button>
-            </div>
-            <p>3 camere, 2 bagni, 120m²</p>
-            <p>Un bellissimo appartamento situato nel cuore della città, vicino a tutti i servizi principali. Prezzo: €300,000.</p>
-            <button class="purchase-button">Acquista</button>
-        </div>
-    </div>
-
-    <!-- Modal for Ad 2 -->
-    <div id="modal2" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal2')">&times;</span>
-            <h2>Villa moderna</h2>
-            <div class="carousel">
-                <button class="carousel-button prev" onclick="prevSlide('carousel2')">&#10094;</button>
-                <div class="carousel-inner" id="carousel2">
-                    <img src="/css/images/property2.jpg" alt="Foto 1">
-                    <img src="/css/images/property2.jpg" alt="Foto 2">
-                    <img src="/css/images/property2.jpg" alt="Foto 3">
-                </div>
-                <button class="carousel-button next" onclick="nextSlide('carousel2')">&#10095;</button>
-            </div>
-            <p>5 camere, 3 bagni, 250m²</p>
-            <p>Una splendida villa con giardino e piscina, perfetta per una famiglia numerosa. Prezzo: €750,000.</p>
-            <button class="purchase-button">Acquista</button>
-        </div>
-    </div>
 </main>
 <footer>
     <p>&copy; 2024 Immobiliare. Tutti i diritti riservati.</p>
 </footer>
+</body>
+</html>

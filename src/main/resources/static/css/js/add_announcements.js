@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Esempio di invio tramite AJAX con jQuery
         $.ajax({
-            url: '/annunci/aggiungi',
+            url: '/announcements/addAnnouncements',
             type: 'POST',
             data: formData,
             processData: false,

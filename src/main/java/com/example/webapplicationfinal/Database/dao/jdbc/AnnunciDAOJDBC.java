@@ -7,10 +7,14 @@ import java.util.List;
 import com.example.webapplicationfinal.Database.DBSource;
 import com.example.webapplicationfinal.Model.Annuncio;
 import com.example.webapplicationfinal.Database.dao.AnnunciDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class AnnunciDAOJDBC implements AnnunciDAO {
     private DBSource dbSource;
 
+    @Autowired
     public AnnunciDAOJDBC(DBSource dbSource) {
         this.dbSource = dbSource;
     }
@@ -66,6 +70,7 @@ public class AnnunciDAOJDBC implements AnnunciDAO {
         }
         return annuncio;
     }
+
 
     @Override
     public List<Annuncio> findAll() {

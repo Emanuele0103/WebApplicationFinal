@@ -23,8 +23,8 @@ public class Annuncio {
         this.prezzo = prezzo;
         this.descrizione = descrizione;
         this.images = images;
-        this.position = position;
         this.utenteId = utenteId;
+        this.position = position;
     }
 
     // Getters and Setters
@@ -51,4 +51,5 @@ public class Annuncio {
 
     public String getPosition() { return position; }
     public void setPosition(String position) { this.position = position; }
+
 }

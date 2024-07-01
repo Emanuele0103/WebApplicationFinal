@@ -14,7 +14,7 @@
             <li><a href="/">Home</a></li>
             <li><a href="immobili">Proprietà</a></li>
             <li><a href="contatti">Contatti</a></li>
-            <li><a href="accesso">Accedi</a></li>
+            <li><a id="user-button" href="accesso">Accedi</a></li>
         </ul>
     </nav>
 </header>
@@ -51,27 +51,55 @@
     <p>&copy; 2024 Immobiliare. Tutti i diritti riservati.</p>
 </footer>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Verifica lo stato di login e aggiorna il pulsante
+        // Funzione per verificare lo stato di login e aggiornare il pulsante
         function checkAndUpdateLoginStatus() {
-            $.ajax({
-                url: 'auth/checkLogin', // URL per verificare lo stato di login
-                method: 'GET',
-                success: function(response) {
-                    if (response) {
-                        // Se l'utente è loggato, cambia il testo del bottone "Accedi" in "Profilo"
-                        $('#user-button').text('Profilo');
+            var sessionToken = localStorage.getItem('sessionToken');
+            if (sessionToken) {
+                $.ajax({
+                    url: '/auth/checkLogin',
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + sessionToken },
+                    success: function(response) {
+                        if (response) {
+                            $('#user-button').text('Profilo').attr('href', '/profile');
+                        } else {
+                            localStorage.removeItem('sessionToken');
+                            $('#user-button').text('Accedi').attr('href', 'accesso');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Errore durante la verifica dello stato di login:', error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Errore durante la verifica dello stato di login:', error);
-                }
-            });
+                });
+            } else {
+                $('#user-button').text('Accedi').attr('href', 'accesso');
+            }
         }
 
-        checkAndUpdateLoginStatus(); // Chiamata alla funzione al caricamento della pagina
+        // Chiamata per verificare lo stato di login quando la pagina è caricata
+        checkAndUpdateLoginStatus();
+
+        // Evento click sul pulsante di logout
+        $('#logout-button').click(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/auth/doLogout',
+                method: 'GET',
+                success: function(response) {
+                    console.log(response);
+                    localStorage.removeItem('sessionToken');
+                    $('#user-button').text('Accedi').attr('href', 'accesso');
+                    // Altri eventuali aggiustamenti UI dopo il logout
+                },
+                error: function(xhr, status, error) {
+                    console.error('Errore durante il logout:', error);
+                    alert('Errore durante il logout. Si prega di riprovare.');
+                }
+            });
+        });
     });
 </script>
-
 </html>

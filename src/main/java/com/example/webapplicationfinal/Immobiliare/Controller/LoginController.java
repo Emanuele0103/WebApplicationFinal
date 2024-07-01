@@ -91,4 +91,14 @@ public class LoginController {
         String usernameLogged = (String) session.getAttribute("usernameLogged");
         return usernameLogged != null;
     }
+
+    @GetMapping("/doLogout")
+    @ResponseBody
+    public ResponseEntity<String> logout(HttpSession session) {
+        LOGGER.info("Logout attempt");
+
+        session.invalidate(); // Invalida la sessione
+
+        return ResponseEntity.ok("Logout effettuato con successo");
+    }
 }

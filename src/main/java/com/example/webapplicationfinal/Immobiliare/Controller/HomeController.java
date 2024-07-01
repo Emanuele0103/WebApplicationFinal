@@ -37,11 +37,4 @@ public class HomeController {
     @GetMapping("/profile")
     public String profile() { return "profile"; }
 
-    @GetMapping("/auth/doLogout")
-    @ResponseBody
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "Logout successful";
-    }
-
 }

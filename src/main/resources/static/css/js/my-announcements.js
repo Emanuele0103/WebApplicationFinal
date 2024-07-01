@@ -131,5 +131,3 @@ function nextSlide(id) {
     carouselImage.src = `/css/images/${images[currentImage]}`;
     carouselImage.dataset.currentImage = currentImage;
 }
-
-

@@ -88,16 +88,11 @@ public class AnnuncioController {
     }
 
 
-    @PutMapping("/{id}/modified")
+    @PutMapping("/{id}/edit")
     @ResponseBody
     public ResponseEntity<String> modificaAnnuncio(@PathVariable Long id,
-                                                   @RequestParam String titolo,
-                                                   @RequestParam String tipoDiImmobile,
-                                                   @RequestParam String descrizione,
-                                                   @RequestParam int prezzo,
-                                                   @RequestParam String position, // Modifica qui
-                                                   @RequestParam("images") MultipartFile[] files) {
-        LOGGER.info("Modifica dell'annuncio con ID: " + id);
+                                                   @RequestBody Annuncio updatedAnnuncio) {
+        LOGGER.info("Modifica dell'annuncio con ID: " + id + ", Titolo: " + updatedAnnuncio.getTitolo() + ", Descrizione: " + updatedAnnuncio.getDescrizione() + ", Prezzo: " + updatedAnnuncio.getPrezzo());
 
         Annuncio annuncio = annunciDao.findByPrimaryKey(id);
         if (annuncio == null) {
@@ -105,37 +100,16 @@ public class AnnuncioController {
             return ResponseEntity.notFound().build();
         }
 
-        annuncio.setTitolo(titolo);
-        annuncio.setTipoDiImmobile(tipoDiImmobile);
-        annuncio.setDescrizione(descrizione);
-        annuncio.setPrezzo(prezzo);
-        annuncio.setPosition(position); // Modifica qui
-        annuncio.setImages(new ArrayList<>());
+        // Aggiorna solo i campi necessari
+        annuncio.setTitolo(updatedAnnuncio.getTitolo());
+        annuncio.setDescrizione(updatedAnnuncio.getDescrizione());
+        annuncio.setPrezzo(updatedAnnuncio.getPrezzo());
 
-        try {
-            // Salvataggio delle immagini sul file system
-            for (MultipartFile file : files) {
-                String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-                Path uploadPath = Paths.get(uploadDir);
+        annunciDao.update(annuncio);
 
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                Path filePath = uploadPath.resolve(fileName);
-                Files.copy(file.getInputStream(), filePath);
-
-                annuncio.getImages().add(filePath.toString());
-            }
-
-            annunciDao.update(annuncio);
-
-            return ResponseEntity.ok("Annuncio modificato con successo");
-        } catch (IOException ex) {
-            LOGGER.severe("Impossibile salvare le immagini per l'annuncio " + titolo + ". Errore: " + ex.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante il salvataggio delle immagini");
-        }
+        return ResponseEntity.ok("Annuncio modificato con successo");
     }
+
 
     @GetMapping("/myAnnouncements")
     @ResponseBody
@@ -147,8 +121,6 @@ public class AnnuncioController {
         }
         return annunciDao.findByUtenteId(utenteId);
     }
-
-
 
     @GetMapping("/lista")
     @ResponseBody

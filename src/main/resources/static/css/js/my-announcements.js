@@ -46,18 +46,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     modal.id = 'modal' + annuncio.id;
                     modal.classList.add('modal');
                     modal.innerHTML = `
-                        <div class="modal-content">
-                            <span class="close" onclick="closeModal('modal${annuncio.id}')">&times;</span>
-                            <h2>${annuncio.titolo}</h2>
-                            <div class="carousel">
-                                <button class="carousel-button prev" onclick="prevSlide(${annuncio.id})">&#10094;</button>
-                                <img class="carousel-image" id="carousel-image${annuncio.id}" src="/css/images/${annuncio.images[0]}" alt="${annuncio.titolo}" data-images='${JSON.stringify(annuncio.images)}'>
-                                <button class="carousel-button next" onclick="nextSlide(${annuncio.id})">&#10095;</button>
-                            </div>
-                            <p>${annuncio.descrizione}</p>
-                            <p>Prezzo: €${annuncio.prezzo}</p>
-                            <button class="delete-button" onclick="confirmDelete(${annuncio.id})">Elimina</button>
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal('modal${annuncio.id}')">&times;</span>
+                        <h2>${annuncio.titolo}</h2>
+                        <div class="carousel">
+                            <button class="carousel-button prev" onclick="prevSlide(${annuncio.id})">&#10094;</button>
+                            <img class="carousel-image" id="carousel-image${annuncio.id}" src="/css/images/${annuncio.images[0] || 'default.jpeg'}" alt="${annuncio.titolo}" data-images='${JSON.stringify(annuncio.images)}'>
+                            <button class="carousel-button next" onclick="nextSlide(${annuncio.id})">&#10095;</button>
                         </div>
+                        <p>${annuncio.descrizione}</p>
+                        <p>Prezzo: €${annuncio.prezzo}</p>
+                        <button class="edit-button" onclick="editAnnuncio(${annuncio.id})">Modifica</button>
+                        <button class="delete-button" onclick="confirmDelete(${annuncio.id})">Elimina</button>
+                        <div id="edit-form${annuncio.id}" class="edit-form" style="display: none;">
+                        <h3>Modifica Annuncio</h3>
+                        <form onsubmit="submitEdit(event, ${annuncio.id})">
+                            <label for="edit-title${annuncio.id}">Titolo</label>
+                            <input type="text" id="edit-title${annuncio.id}" name="titolo" value="${annuncio.titolo}" required>
+                            <label for="edit-description${annuncio.id}">Descrizione</label>
+                            <textarea id="edit-description${annuncio.id}" name="descrizione" required>${annuncio.descrizione}</textarea>
+                            <label for="edit-price${annuncio.id}">Prezzo</label>
+                            <input type="number" id="edit-price${annuncio.id}" name="prezzo" value="${annuncio.prezzo}" required>
+                            <button type="submit">Salva</button>
+                            <button type="button" onclick="cancelEdit(${annuncio.id})">Annulla</button>
+                        </form>
+                    </div>
                     `;
                     document.body.appendChild(modal);
                 });
@@ -111,7 +124,6 @@ function deleteAnnuncio(id) {
     });
 }
 
-
 // Funzione per navigare alla slide precedente nel carousel
 function prevSlide(id) {
     var carouselImage = document.getElementById(`carousel-image${id}`);
@@ -131,3 +143,42 @@ function nextSlide(id) {
     carouselImage.src = `/css/images/${images[currentImage]}`;
     carouselImage.dataset.currentImage = currentImage;
 }
+
+// Funzione per aprire il modulo di modifica
+function editAnnuncio(id) {
+    var editForm = document.getElementById('edit-form' + id);
+    if (editForm) {
+        editForm.style.display = 'block';
+    }
+}
+
+// Funzione per annullare la modifica
+function cancelEdit(id) {
+    var editForm = document.getElementById('edit-form' + id);
+    if (editForm) {
+        editForm.style.display = 'none';
+    }
+}
+function submitEdit(event, id) {
+    event.preventDefault();
+
+    var titolo = document.getElementById('edit-title' + id).value;
+    var descrizione = document.getElementById('edit-description' + id).value;
+    var prezzo = document.getElementById('edit-price' + id).value;
+
+    $.ajax({
+        url: '/announcements/' + id + '/edit',
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({ titolo: titolo, descrizione: descrizione, prezzo: parseFloat(prezzo) }),
+        success: function(response) {
+            // Successo della modifica
+            cancelEdit(id);
+            closeModal('modal' + id);
+        },
+        error: function(error) {
+            console.error('Errore durante la modifica dell\'annuncio:', error);
+        }
+    });
+}
+

@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.lang.reflect.Array;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -91,8 +89,13 @@ public class AnnuncioController {
     @PutMapping("/{id}/edit")
     @ResponseBody
     public ResponseEntity<String> modificaAnnuncio(@PathVariable Long id,
-                                                   @RequestBody Annuncio updatedAnnuncio) {
-        LOGGER.info("Modifica dell'annuncio con ID: " + id + ", Titolo: " + updatedAnnuncio.getTitolo() + ", Descrizione: " + updatedAnnuncio.getDescrizione() + ", Prezzo: " + updatedAnnuncio.getPrezzo());
+                                                   @RequestParam String titolo,
+                                                   @RequestParam String tipoDiImmobile,
+                                                   @RequestParam String descrizione,
+                                                   @RequestParam int prezzo,
+                                                   @RequestParam String position,
+                                                   @RequestParam("images") MultipartFile[] files) {
+        LOGGER.info("Modifica dell'annuncio con ID: " + id + ", Titolo: " + titolo + ", Descrizione: " + descrizione + ", Prezzo: " + prezzo + ", Tipo di Immobile: " + tipoDiImmobile + ", Posizione: " + position);
 
         Annuncio annuncio = annunciDao.findByPrimaryKey(id);
         if (annuncio == null) {
@@ -100,15 +103,44 @@ public class AnnuncioController {
             return ResponseEntity.notFound().build();
         }
 
-        // Aggiorna solo i campi necessari
-        annuncio.setTitolo(updatedAnnuncio.getTitolo());
-        annuncio.setDescrizione(updatedAnnuncio.getDescrizione());
-        annuncio.setPrezzo(updatedAnnuncio.getPrezzo());
+        annuncio.setTitolo(titolo);
+        annuncio.setTipoDiImmobile(tipoDiImmobile);
+        annuncio.setDescrizione(descrizione);
+        annuncio.setPrezzo(prezzo);
+        annuncio.setPosition(position);
 
-        annunciDao.update(annuncio);
+        try {
+            ArrayList<String> updatedImages = new ArrayList<>();
+            for (MultipartFile file : files) {
+                String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+                Path uploadPath = Paths.get(uploadDir);
 
-        return ResponseEntity.ok("Annuncio modificato con successo");
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+                updatedImages.add(fileName);
+            }
+
+            // Aggiorna solo se sono state caricate nuove immagini
+            if (!updatedImages.isEmpty()) {
+                annuncio.setImages(updatedImages);
+            }
+
+            annunciDao.update(annuncio);
+
+            return ResponseEntity.ok("Annuncio modificato con successo");
+        } catch (IOException ex) {
+            LOGGER.severe("Impossibile salvare le immagini per l'annuncio " + id + ". Errore: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante il salvataggio delle immagini");
+        }
     }
+
+
+
 
 
     @GetMapping("/myAnnouncements")

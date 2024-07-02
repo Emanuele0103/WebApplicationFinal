@@ -304,7 +304,8 @@ footer {
 }
 
 .edit-form input,
-.edit-form textarea {
+.edit-form textarea,
+.edit-form select {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
@@ -348,3 +349,4 @@ footer {
 .edit-form button[type="button"]:hover {
     background-color: #5a6268;
 }
+

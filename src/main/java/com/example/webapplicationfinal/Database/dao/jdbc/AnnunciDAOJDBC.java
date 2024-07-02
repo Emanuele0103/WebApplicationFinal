@@ -7,6 +7,7 @@ import java.util.List;
 import com.example.webapplicationfinal.Database.DBSource;
 import com.example.webapplicationfinal.Model.Annuncio;
 import com.example.webapplicationfinal.Database.dao.AnnunciDAO;
+import com.example.webapplicationfinal.Model.Utente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -70,7 +71,6 @@ public class AnnunciDAOJDBC implements AnnunciDAO {
         }
         return annuncio;
     }
-
 
     @Override
     public List<Annuncio> findAll() {
@@ -163,4 +163,24 @@ public class AnnunciDAOJDBC implements AnnunciDAO {
         return annunci;
     }
 
+    // Aggiunta del nuovo metodo
+    public Utente findUtenteByAnnuncioId(Long annuncioId) {
+        Utente utente = null;
+        try (Connection conn = dbSource.getConnection()) {
+            String query = "SELECT u.id, u.nome, u.cognome, u.email FROM utenti u JOIN annuncio a ON u.id = a.utente_id WHERE a.id = ?";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setLong(1, annuncioId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                utente = new Utente();
+                utente.setId(rs.getInt("id"));
+                utente.setNome(rs.getString("nome"));
+                utente.setCognome(rs.getString("cognome"));
+                utente.setEmail(rs.getString("email"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return utente;
+    }
 }

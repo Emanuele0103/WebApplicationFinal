@@ -33,7 +33,7 @@ $(document).ready(function() {
                 properties.forEach(function(property) {
                     var propertyHtml = `
                     <div class="property-item" data-id="${property.id}">
-                        <img src="/css/images/${property.images[0] || 'default.jpeg'}" alt="${property.titolo}">
+                        <img src="/css/images/${property.images && property.images.length > 0 ? property.images[0] : 'default.jpeg'}" alt="${property.titolo}">
                         <h3>${property.titolo}</h3>
                         <p>${property.descrizione}</p>
                         <p>${property.prezzo}€</p>
@@ -46,12 +46,22 @@ $(document).ready(function() {
             // Gestione click sulle proprietà per aprire il modal
             $(document).on('click', '.property-item', function() {
                 var annuncioId = $(this).data('id');
-                $.getJSON(`/api/immobili/${annuncioId}`, function(annuncio) {
+                $.getJSON(`/api/immobili/${annuncioId}`, function(response) {
+                    var annuncio = response.annuncio;
+                    var utente = response.utente;
+
                     $('#modal-title').text(annuncio.titolo);
-                    $('#carousel-image').attr('src', `/css/images/${annuncio.images[0] || 'default.jpeg'}`);
+                    $('#carousel-image').attr('src', `/css/images/${annuncio.images && annuncio.images.length > 0 ? annuncio.images[0] : 'default.jpeg'}`);
                     $('#carousel-image').data('images', annuncio.images); // Imposta l'attributo data-images con le immagini dell'annuncio
                     $('#modal-description').text(annuncio.descrizione);
                     $('#modal-price').text(`Prezzo: ${annuncio.prezzo}€`);
+
+                    if (utente) {
+                        $('#modal-owner').text(`Proprietario: ${utente.nome} ${utente.cognome} (${utente.email})`);
+                    } else {
+                        $('#modal-owner').text(`Proprietario non disponibile`);
+                    }
+
                     openModal('modal-details');
                 });
             });
@@ -64,8 +74,7 @@ $(document).ready(function() {
     loadProperties();
 });
 
-// Variabile per tenere traccia dell'indice dell'immagine corrente nel carousel
-var currentImageIndex = 0;
+ var currentImageIndex = 0;
 
 // Funzione per aprire il modal
 function openModal(modalId) {

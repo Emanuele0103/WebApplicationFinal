@@ -1,6 +1,7 @@
 package com.example.webapplicationfinal.Database.dao;
 
 import com.example.webapplicationfinal.Model.Annuncio;
+import com.example.webapplicationfinal.Model.Utente;
 
 import java.util.List;
 

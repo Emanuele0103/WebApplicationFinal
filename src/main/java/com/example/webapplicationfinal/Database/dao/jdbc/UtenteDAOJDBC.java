@@ -4,7 +4,6 @@ import com.example.webapplicationfinal.Database.DBSource;
 import com.example.webapplicationfinal.Model.Utente;
 import com.example.webapplicationfinal.Database.dao.UtenteDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.*;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -37,7 +36,7 @@ public class UtenteDAOJDBC implements UtenteDAO {
             st.executeUpdate();
             ResultSet generatedKeys = st.getGeneratedKeys();
             if (generatedKeys.next()) {
-                utente.setID_Utente(generatedKeys.getInt(1));
+                utente.setId(generatedKeys.getInt(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,7 +53,7 @@ public class UtenteDAOJDBC implements UtenteDAO {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 utente = new Utente();
-                utente.setID_Utente(rs.getInt("id"));
+                utente.setId(rs.getInt("id"));
                 utente.setNome(rs.getString("nome"));
                 utente.setCognome(rs.getString("cognome"));
                 utente.setEmail(rs.getString("email"));
@@ -76,7 +75,7 @@ public class UtenteDAOJDBC implements UtenteDAO {
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 Utente utente = new Utente();
-                utente.setID_Utente(rs.getInt("id"));
+                utente.setId(rs.getInt("id"));
                 utente.setNome(rs.getString("nome"));
                 utente.setCognome(rs.getString("cognome"));
                 utente.setEmail(rs.getString("email"));
@@ -100,7 +99,7 @@ public class UtenteDAOJDBC implements UtenteDAO {
             st.setString(3, utente.getEmail());
             st.setString(4, utente.getPassword()); // Salva la password in chiaro (NON raccomandato)
             st.setString(5, utente.getTipo());
-            st.setLong(6, utente.getID_Utente());
+            st.setLong(6, utente.getId());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,7 +111,7 @@ public class UtenteDAOJDBC implements UtenteDAO {
         try (Connection conn = dbSource.getConnection()) {
             String query = "DELETE FROM utenti WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(query);
-            st.setLong(1, utente.getID_Utente());
+            st.setLong(1, utente.getId());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -134,7 +133,7 @@ public class UtenteDAOJDBC implements UtenteDAO {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 utente = new Utente();
-                utente.setID_Utente(rs.getInt("id"));
+                utente.setId(rs.getInt("id"));
                 utente.setNome(rs.getString("nome"));
                 utente.setCognome(rs.getString("cognome"));
                 utente.setEmail(rs.getString("email"));

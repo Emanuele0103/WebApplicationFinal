@@ -36,7 +36,7 @@ public class LoginController {
             if (passwordEncoder.matches(password, utente.getPassword())) {
                 session.setAttribute("usernameLogged", email);
                 session.setAttribute("userRole", utente.getTipo());
-                session.setAttribute("userId", utente.getID_Utente());
+                session.setAttribute("userId", utente.getId());
                 LOGGER.info("Login successful for username: " + email);
                 return ResponseEntity.ok("/profile"); // URL per la pagina profilo
             }
@@ -70,7 +70,7 @@ public class LoginController {
 
         session.setAttribute("usernameLogged", email);
         session.setAttribute("userRole", tipo);
-        session.setAttribute("userId", nuovoUtente.getID_Utente());
+        session.setAttribute("userId", nuovoUtente.getId());
 
         return "Registrazione avvenuta con successo";
     }

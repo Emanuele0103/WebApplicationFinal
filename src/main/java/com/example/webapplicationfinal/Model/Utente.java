@@ -1,44 +1,44 @@
 package com.example.webapplicationfinal.Model;
 
 public class Utente {
-    private long ID_Utente;
-    private String Nome;
-    private String Cognome;
-    private String Email;
+    private int id;
+    private String nome;
+    private String cognome;
+    private String email;
     private String password;
     private String tipo;
 
     public String getCognome() {
-        return Cognome;
+        return cognome;
     }
 
     public void setCognome(String cognome) {
-        Cognome = cognome;
+        this.cognome = cognome;
     }
 
 
-    public long getID_Utente() {
-        return ID_Utente;
+    public int getId() {
+        return id;
     }
 
-    public void setID_Utente(Integer ID_Utente) {
-        this.ID_Utente = ID_Utente;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
-        return Nome;
+        return nome;
     }
 
     public void setNome(String nome) {
-        Nome = nome;
+        this.nome = nome;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getPassword() {

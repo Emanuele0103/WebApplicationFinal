@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.webapplicationfinal.Database.DBSource;
-import com.example.webapplicationfinal.Model.Annuncio;
 import com.example.webapplicationfinal.Database.dao.AnnunciDAO;
+import com.example.webapplicationfinal.Model.Annuncio;
 import com.example.webapplicationfinal.Model.Utente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class AnnunciDAOJDBC implements AnnunciDAO {
-    private DBSource dbSource;
+    private final DBSource dbSource;
 
     @Autowired
     public AnnunciDAOJDBC(DBSource dbSource) {

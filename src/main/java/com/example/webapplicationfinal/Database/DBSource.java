@@ -9,9 +9,9 @@ import java.sql.SQLException;
 
 @Component
 public class DBSource {
-    private String uri;
-    private String username;
-    private String password;
+    private final String uri;
+    private final String username;
+    private final String password;
 
     public DBSource(@Value("${db.uri}") String uri,
                     @Value("${db.username}") String username,

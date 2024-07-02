@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
             error: function(error) {
                 console.error('Errore durante l\'invio dei dati:', error);
                 // Gestire il caso di errore di invio in modo appropriato
+                console.log('Dettagli errore:', error.responseText);
             }
         });
     });

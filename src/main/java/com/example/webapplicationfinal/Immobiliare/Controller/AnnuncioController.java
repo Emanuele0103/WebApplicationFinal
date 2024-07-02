@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,6 @@ public class AnnuncioController {
         }
     }
 
-
     @PutMapping("/{id}/edit")
     @ResponseBody
     public ResponseEntity<String> modificaAnnuncio(@PathVariable Long id,
@@ -138,10 +136,6 @@ public class AnnuncioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante il salvataggio delle immagini");
         }
     }
-
-
-
-
 
     @GetMapping("/myAnnouncements")
     @ResponseBody

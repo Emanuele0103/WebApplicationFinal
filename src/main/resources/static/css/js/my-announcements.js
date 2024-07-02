@@ -211,5 +211,3 @@ function submitEdit(event, id) {
         }
     });
 }
-
-

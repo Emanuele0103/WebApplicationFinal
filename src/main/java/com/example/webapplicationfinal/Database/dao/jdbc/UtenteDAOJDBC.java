@@ -36,7 +36,7 @@ public class UtenteDAOJDBC implements UtenteDAO {
             st.executeUpdate();
             ResultSet generatedKeys = st.getGeneratedKeys();
             if (generatedKeys.next()) {
-                utente.setId(generatedKeys.getInt(1));
+                utente.setId(generatedKeys.getLong(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,7 +53,7 @@ public class UtenteDAOJDBC implements UtenteDAO {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 utente = new Utente();
-                utente.setId(rs.getInt("id"));
+                utente.setId(rs.getLong("id"));
                 utente.setNome(rs.getString("nome"));
                 utente.setCognome(rs.getString("cognome"));
                 utente.setEmail(rs.getString("email"));
@@ -75,7 +75,7 @@ public class UtenteDAOJDBC implements UtenteDAO {
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 Utente utente = new Utente();
-                utente.setId(rs.getInt("id"));
+                utente.setId(rs.getLong("id"));
                 utente.setNome(rs.getString("nome"));
                 utente.setCognome(rs.getString("cognome"));
                 utente.setEmail(rs.getString("email"));
@@ -133,7 +133,7 @@ public class UtenteDAOJDBC implements UtenteDAO {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 utente = new Utente();
-                utente.setId(rs.getInt("id"));
+                utente.setId(rs.getLong("id"));
                 utente.setNome(rs.getString("nome"));
                 utente.setCognome(rs.getString("cognome"));
                 utente.setEmail(rs.getString("email"));

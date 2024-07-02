@@ -173,7 +173,7 @@ public class AnnunciDAOJDBC implements AnnunciDAO {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 utente = new Utente();
-                utente.setId(rs.getInt("id"));
+                utente.setId(rs.getLong("id"));
                 utente.setNome(rs.getString("nome"));
                 utente.setCognome(rs.getString("cognome"));
                 utente.setEmail(rs.getString("email"));

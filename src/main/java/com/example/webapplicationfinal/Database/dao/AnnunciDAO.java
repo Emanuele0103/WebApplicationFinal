@@ -13,4 +13,6 @@ public interface AnnunciDAO {
 
     // Metodi specifici
     List<Annuncio> findByUtenteId(Long utenteId);
+
+    List<Annuncio> findByPosition(String position);
 }

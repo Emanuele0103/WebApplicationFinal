@@ -110,7 +110,8 @@ nav ul li a {
 
 .property-item img {
     width: 100%;
-    height: auto;
+    height: 200px; /* Imposta un'altezza fissa per l'immagine */
+    object-fit: cover; /* Copri l'area dell'elemento genitore */
 }
 
 .property-item h3 {
@@ -128,4 +129,7 @@ footer {
     color: white;
     text-align: center;
     padding: 1rem 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }

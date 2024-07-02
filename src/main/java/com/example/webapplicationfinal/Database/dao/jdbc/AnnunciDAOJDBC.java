@@ -52,19 +52,7 @@ public class AnnunciDAOJDBC implements AnnunciDAO {
             st.setLong(1, id);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                annuncio = new Annuncio();
-                annuncio.setId(rs.getLong("id"));
-                annuncio.setTitolo(rs.getString("titolo"));
-                annuncio.setTipoDiImmobile(rs.getString("tipo_di_immobile"));
-                annuncio.setDescrizione(rs.getString("descrizione"));
-                annuncio.setPrezzo(rs.getInt("prezzo"));
-                annuncio.setUtenteId(rs.getLong("utente_id"));
-                Array imagesArray = rs.getArray("images");
-                if (imagesArray != null) {
-                    String[] images = (String[]) imagesArray.getArray();
-                    annuncio.setImages(new ArrayList<>(List.of(images)));
-                }
-                annuncio.setPosition(rs.getString("position"));
+                annuncio = extractAnnuncioFromResultSet(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,19 +68,7 @@ public class AnnunciDAOJDBC implements AnnunciDAO {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
-                Annuncio annuncio = new Annuncio();
-                annuncio.setId(rs.getLong("id"));
-                annuncio.setTitolo(rs.getString("titolo"));
-                annuncio.setTipoDiImmobile(rs.getString("tipo_di_immobile"));
-                annuncio.setDescrizione(rs.getString("descrizione"));
-                annuncio.setPrezzo(rs.getInt("prezzo"));
-                annuncio.setUtenteId(rs.getLong("utente_id"));
-                Array imagesArray = rs.getArray("images");
-                if (imagesArray != null) {
-                    String[] images = (String[]) imagesArray.getArray();
-                    annuncio.setImages(new ArrayList<>(List.of(images)));
-                }
-                annuncio.setPosition(rs.getString("position"));
+                Annuncio annuncio = extractAnnuncioFromResultSet(rs);
                 annunci.add(annuncio);
             }
         } catch (SQLException e) {
@@ -142,19 +118,7 @@ public class AnnunciDAOJDBC implements AnnunciDAO {
             st.setLong(1, utenteId);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Annuncio annuncio = new Annuncio();
-                annuncio.setId(rs.getLong("id"));
-                annuncio.setTitolo(rs.getString("titolo"));
-                annuncio.setTipoDiImmobile(rs.getString("tipo_di_immobile"));
-                annuncio.setDescrizione(rs.getString("descrizione"));
-                annuncio.setPrezzo(rs.getInt("prezzo"));
-                annuncio.setUtenteId(rs.getLong("utente_id"));
-                Array imagesArray = rs.getArray("images");
-                if (imagesArray != null) {
-                    String[] images = (String[]) imagesArray.getArray();
-                    annuncio.setImages(new ArrayList<>(List.of(images)));
-                }
-                annuncio.setPosition(rs.getString("position"));
+                Annuncio annuncio = extractAnnuncioFromResultSet(rs);
                 annunci.add(annuncio);
             }
         } catch (SQLException e) {
@@ -163,7 +127,6 @@ public class AnnunciDAOJDBC implements AnnunciDAO {
         return annunci;
     }
 
-    // Aggiunta del nuovo metodo
     public Utente findUtenteByAnnuncioId(Long annuncioId) {
         Utente utente = null;
         try (Connection conn = dbSource.getConnection()) {
@@ -182,5 +145,52 @@ public class AnnunciDAOJDBC implements AnnunciDAO {
             e.printStackTrace();
         }
         return utente;
+    }
+
+    private Annuncio extractAnnuncioFromResultSet(ResultSet rs) throws SQLException {
+        Annuncio annuncio = new Annuncio();
+        annuncio.setId(rs.getLong("id"));
+        annuncio.setTitolo(rs.getString("titolo"));
+        annuncio.setTipoDiImmobile(rs.getString("tipo_di_immobile"));
+        annuncio.setDescrizione(rs.getString("descrizione"));
+        annuncio.setPrezzo(rs.getInt("prezzo"));
+        annuncio.setUtenteId(rs.getLong("utente_id"));
+        Array imagesArray = rs.getArray("images");
+        if (imagesArray != null) {
+            String[] images = (String[]) imagesArray.getArray();
+            annuncio.setImages(new ArrayList<>(List.of(images)));
+        }
+        annuncio.setPosition(rs.getString("position"));
+        return annuncio;
+    }
+
+    public List<Annuncio> findByPosition(String position) {
+        List<Annuncio> annunci = new ArrayList<>();
+        String sql = "SELECT * FROM annuncio WHERE position LIKE ?";
+        try (Connection conn = dbSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + position + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Annuncio annuncio = new Annuncio();
+                    annuncio.setId(rs.getLong("id"));
+                    annuncio.setTitolo(rs.getString("titolo"));
+                    annuncio.setTipoDiImmobile(rs.getString("tipo_di_immobile"));
+                    annuncio.setDescrizione(rs.getString("descrizione"));
+                    annuncio.setPrezzo(rs.getInt("prezzo"));
+                    annuncio.setUtenteId(rs.getLong("utente_id"));
+                    Array imagesArray = rs.getArray("images");
+                    if (imagesArray != null) {
+                        String[] images = (String[]) imagesArray.getArray();
+                        annuncio.setImages(new ArrayList<>(List.of(images)));
+                    }
+                    annuncio.setPosition(rs.getString("position"));
+                    annunci.add(annuncio);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return annunci;
     }
 }

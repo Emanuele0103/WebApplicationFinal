@@ -101,4 +101,28 @@ public class LoginController {
 
         return ResponseEntity.ok("Logout effettuato con successo");
     }
+
+    @DeleteMapping("/deleteProfile/{id}")
+    @ResponseBody
+    public ResponseEntity<String> eliminaProfilo(@PathVariable Long id) {
+        LOGGER.info("Eliminazione del profilo utente con ID: " + id);
+
+        Utente utente = utenteDao.findByPrimaryKey(id);
+        if (utente == null) {
+            LOGGER.warning("Utente non trovato per l'ID: " + id);
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            // Eventuali operazioni aggiuntive per gestire la rimozione di dati correlati all'utente
+
+            utenteDao.delete(utente);
+
+            return ResponseEntity.ok("Profilo utente eliminato con successo");
+        } catch (Exception ex) {
+            LOGGER.severe("Errore durante l'eliminazione del profilo utente " + id + ". Errore: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione del profilo utente");
+        }
+    }
+
 }

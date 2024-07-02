@@ -1,3 +1,4 @@
+/* Reset generale e impostazioni di base */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -5,6 +6,7 @@ body {
     box-sizing: border-box;
 }
 
+/* Header */
 header {
     background-color: #333;
     color: white;
@@ -14,15 +16,16 @@ header {
     left: 0;
     width: 100%;
     z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombra sottile */
 }
 
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo {
@@ -44,52 +47,77 @@ nav ul li {
 nav ul li a {
     color: white;
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
+nav ul li a:hover {
+    color: #ccc;
+}
+
+/* Main content */
 main {
     padding: 2rem 1rem;
 }
 
+/* Sezioni delle proprietà */
 .properties-section {
     margin-bottom: 3rem;
 }
 
-.properties-section h1 {
-    font-size: 2rem;
-    margin-top: 4rem;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
+.properties-section h1,
 .properties-section h2 {
     font-size: 2rem;
     margin-bottom: 2rem;
     text-align: center;
 }
 
+/* Lista delle proprietà */
 .property-list {
     display: flex;
-    overflow-x: auto;
     gap: 1rem;
     padding: 1rem 0;
+    overflow-x: auto;
     scroll-snap-type: x mandatory;
 }
 
 .property-item {
     flex: 0 0 auto;
+    width: 300px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 8px;
     overflow: hidden;
-    width: 300px;
     margin: 0 0.5rem;
     text-align: left;
     scroll-snap-align: start;
+    position: relative; /* Aggiunto per il posizionamento del pulsante */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra leggera */
 }
 
 .property-item img {
     width: 100%;
     height: auto;
+    display: block;
+    border-radius: 8px 8px 0 0;
+}
+
+.property-item .details-button {
+    position: absolute;
+    bottom: 15px; /* Distanza dal basso */
+    left: 50%; /* Allineato centralmente */
+    transform: translateX(-50%); /* Per centrare rispetto al centro */
+    background-color: #007bff; /* Colore di sfondo del pulsante */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.property-item .details-button:hover {
+    background-color: #0056b3; /* Cambio colore al passaggio del mouse */
 }
 
 .property-item h3 {
@@ -99,19 +127,113 @@ main {
 
 .property-item p {
     font-size: 1rem;
-    margin: 0 1rem 1rem 1rem;
+    margin: 0 1rem 1rem;
 }
 
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.modal-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s ease;
+}
+
+.modal-content .close:hover {
+    color: black;
+}
+
+/* Carousel */
+.carousel {
+    position: relative;
+    margin-top: 20px; /* Adjust spacing */
+    margin-bottom: 20px; /* Adjust spacing */
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+}
+
+.carousel-button {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 0.5rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 50%; /* Makes the buttons round */
+}
+
+.carousel-button.prev {
+    left: 10px;
+}
+
+.carousel-button.next {
+    right: 10px;
+}
+
+.carousel-button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+/* Footer */
 footer {
     background-color: #333;
     color: white;
     text-align: center;
     padding: 1rem 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
 
 /* Custom scrollbar styles */
 .property-list::-webkit-scrollbar {
     height: 8px;
+    background-color: transparent;
 }
 
 .property-list::-webkit-scrollbar-thumb {

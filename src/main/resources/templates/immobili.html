@@ -12,85 +12,52 @@
     <div class="logo">Immobiliare</div>
     <ul>
       <li><a href="/">Home</a></li>
-      <li><a href="immobili">Proprietà</a></li>
-      <li><a href="contatti">Contatti</a></li>
-      <li><a id="user-button" href="accesso">Accedi</a></li>
+      <li><a href="/immobili">Proprietà</a></li>
+      <li><a href="/contatti">Contatti</a></li>
+      <li><a id="user-button" href="/accesso">Accedi</a></li>
     </ul>
   </nav>
 </header>
 <main>
-  <section class="properties-section">
+  <section id="appartamenti" class="properties-section">
     <h1>Appartamenti</h1>
-    <div class="property-list">
-      <div class="property-item">
-        <img src="css/images/property1.jpg" alt="Appartamento 1">
-        <h3>Appartamento in centro</h3>
-        <p>3 camere, 2 bagni, 120m²</p>
-      </div>
-      <div class="property-item">
-        <img src="css/images/property2.jpg" alt="Appartamento 2">
-        <h3>Appartamento moderno</h3>
-        <p>2 camere, 1 bagno, 90m²</p>
-      </div>
-      <!-- Aggiungi altri appartamenti qui -->
-    </div>
+    <div class="property-list"></div>
   </section>
 
-  <section class="properties-section">
+  <section id="ville" class="properties-section">
     <h2>Ville</h2>
-    <div class="property-list">
-      <div class="property-item">
-        <img src="css/images/property1.jpg" alt="Villa 1">
-        <h3>Villa con giardino</h3>
-        <p>5 camere, 3 bagni, 250m²</p>
-      </div>
-      <div class="property-item">
-        <img src="css/images/property1.jpg" alt="Villa 2">
-        <h3>Villa moderna</h3>
-        <p>4 camere, 3 bagni, 200m²</p>
-      </div>
-      <!-- Aggiungi altre ville qui -->
-    </div>
+    <div class="property-list"></div>
   </section>
 
-  <section class="properties-section">
+  <section id="box_auto" class="properties-section">
     <h2>Box Auto</h2>
-    <div class="property-list">
-      <div class="property-item">
-        <img src="css/images/property3.jpg" alt="Box Auto 1">
-        <h3>Box auto spazioso</h3>
-        <p>20m²</p>
-      </div>
-      <div class="property-item">
-        <img src="css/images/hero-image.jpg" alt="Box Auto 2">
-        <h3>Box auto doppio</h3>
-        <p>40m²</p>
-      </div>
-      <!-- Aggiungi altri box auto qui -->
-    </div>
+    <div class="property-list"></div>
   </section>
 
-  <section class="properties-section">
+  <section id="terreno_edificabile" class="properties-section">
     <h2>Terreni Edificabili</h2>
-    <div class="property-list">
-      <div class="property-item">
-        <img src="css/images/hero-image.jpg" alt="Terreno Edificabile 1">
-        <h3>Terreno edificabile</h3>
-        <p>1000m²</p>
-      </div>
-      <div class="property-item">
-        <img src="css/images/hero-image.jpg" alt="Terreno Edificabile 2">
-        <h3>Terreno agricolo</h3>
-        <p>2000m²</p>
-      </div>
-      <!-- Aggiungi altri terreni edificabili qui -->
-    </div>
+    <div class="property-list"></div>
   </section>
+
+  <div id="modal-details" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('modal-details')">&times;</span>
+      <h2 id="modal-title"></h2>
+      <div class="carousel">
+        <button class="carousel-button prev" onclick="prevSlide()">&#10094;</button>
+        <img class="carousel-image" id="carousel-image" src="/css/images/default.jpeg" alt="Immagine Annuncio" data-images='["image1.jpg", "image2.jpg", "image3.jpg"]'>
+        <button class="carousel-button next" onclick="nextSlide()">&#10095;</button>
+      </div>
+      <p id="modal-description"></p>
+      <p id="modal-price"></p>
+    </div>
+  </div>
 </main>
 <footer>
   <p>&copy; 2024 Immobiliare. Tutti i diritti riservati.</p>
 </footer>
-</body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/css/js/immobili.js"></script>
 <script src="/css/js/profile.js"></script>
+</body>
 </html>

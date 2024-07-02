@@ -18,6 +18,8 @@ if(isset($_POST['submit'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contatti</title>
     <link rel="stylesheet" href="/css/contatti.css">
+    <script src= "/css/js/mailService.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <header>
@@ -36,13 +38,13 @@ if(isset($_POST['submit'])){
         <h2>Contattaci</h2>
         <div class="contact-info">
             <p><strong>Indirizzo:</strong> Via Pietro Bucci, 87036 Arcavacata, Italia</p>
-            <p><strong>Telefono:</strong> +39 06 1234567</p>
-            <p><strong>Email:</strong> info@immobiliare.it</p>
+            <p><strong>Telefono:</strong> +39 3661102359</p>
+            <p><strong>Email:</strong> salvatoretorchia0@gmail.com</p>
             <a href="https://www.facebook.com/salvatore.torchia.393"><img src="/css/images/logo-facebook.svg" width="50" height="50"></a>
             <a href="https://www.instagram.com/__turii__/"><img src="/css/images/logo-instagram.svg" width="50" height="50"></a>
         </div>
 
-        <form class="contact-form" action="#" method="POST">
+        <form class="contact-form" action="#">
             <div class="form-group">
                 <label for="name">Nome</label>
                 <input type="text" id="name" name="name" required>

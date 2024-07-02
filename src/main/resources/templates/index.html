@@ -18,39 +18,49 @@
         </ul>
     </nav>
 </header>
-<section class="box background">
-    <h1>Trova la casa dei tuoi sogni</h1>
-    <form class="search-form">
-        <label>
-            <input type="text" placeholder="Città, indirizzo, CAP">
-        </label>
-        <button type="submit">Cerca</button>
-    </form>
-</section>
-<section class="featured-properties">
-    <h2>Proprietà in evidenza</h2>
-    <div class="property-list">
-        <div class="property-item">
-            <img src="/css/images/prova.jpg" alt="Proprietà 1">
-            <h3>Appartamento in centro</h3>
-            <p>3 camere, 2 bagni, 120m²</p>
+<main>
+    <section class="box background">
+        <h1>Trova la casa dei tuoi sogni</h1>
+        <form class="search-form">
+            <label>
+                <input type="text" id="search-input" placeholder="Città, indirizzo, CAP">
+            </label>
+            <button type="submit">Cerca</button>
+        </form>
+    </section>
+    <section class="featured-properties">
+        <h2 id="property-title">Proprietà in evidenza</h2>
+        <div class="property-list" id="featured-properties-list">
+            <!-- Contenuto delle proprietà in evidenza sarà aggiunto dinamicamente qui -->
         </div>
-        <div class="property-item">
-            <img src="/css/images/property2.jpg" alt="Proprietà 2">
-            <h3>Villa con giardino</h3>
-            <p>5 camere, 3 bagni, 250m²</p>
-        </div>
-        <div class="property-item">
-            <img src="/css/images/property3.jpg" alt="Proprietà 3">
-            <h3>Monolocale moderno</h3>
-            <p>1 camera, 1 bagno, 45m²</p>
+        <p id="no-properties-message" style="display: none;">Nessun immobile trovato</p>
+    </section>
+    <!-- Modal per visualizzare dettagli annuncio -->
+    <div id="property-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2 id="modal-title"></h2>
+            </div>
+            <div class="modal-body">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="prevSlide()">&#10094;</button>
+                    <img class="carousel-image" id="modal-image" src="" alt="">
+                    <button class="carousel-button next" onclick="nextSlide()">&#10095;</button>
+                </div>
+                <div id="modal-description"></div>
+                <p id="modal-price"></p>
+                <p id="modal-type"></p>
+                <p id="modal-address"></p>
+            </div>
         </div>
     </div>
-</section>
+</main>
 <footer>
     <p>&copy; 2024 Immobiliare. Tutti i diritti riservati.</p>
 </footer>
-</body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/css/js/profile.js"></script>
+<script src="/css/js/randomProperties.js"></script>
+<script src="/css/js/searchProperties.js"></script>
+</body>
 </html>

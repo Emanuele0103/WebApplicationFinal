@@ -1,5 +1,7 @@
 package com.example.webapplicationfinal.Immobiliare.Controller;
 
+import com.example.webapplicationfinal.Database.DBSource;
+import com.example.webapplicationfinal.Database.dao.AnnunciDAO;
 import com.example.webapplicationfinal.Database.dao.jdbc.AnnunciDAOJDBC;
 import com.example.webapplicationfinal.Model.Annuncio;
 import jakarta.servlet.http.HttpSession;
@@ -14,7 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -185,6 +192,21 @@ public class AnnuncioController {
             LOGGER.severe("Impossibile eliminare le immagini associate all'annuncio " + id + ". Errore: " + ex.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore durante l'eliminazione delle immagini associate");
         }
+    }
+
+    @GetMapping("/featured-properties")
+    @ResponseBody
+    public ResponseEntity<List<Annuncio>> getFeaturedProperties(@RequestParam(required = false) String address) {
+        List<Annuncio> annunci;
+        if (address != null && !address.isEmpty()) {
+            annunci = annunciDao.findByPosition(address);
+            if (annunci.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(annunci);
+            }
+        } else {
+            annunci = annunciDao.findAll();
+        }
+        return ResponseEntity.ok(annunci);
     }
 
 }

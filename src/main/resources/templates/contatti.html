@@ -1,3 +1,16 @@
+<?php
+if(isset($_POST['submit'])){
+    $to = "salvatoretorchia0@gmail.com"; // this is your Email address
+    $from = $_POST['email']; // this is the sender's Email address
+    $subject="Request";
+    $message = $from . " " . " wrote the following:" . "\n\n" . $_POST['message'];
+
+    $headers = "From:" . $from;
+    mail($to,$subject,$message,$headers);
+    // You can also use header('Location: thank_you.php'); to redirect to another page.
+    // You cannot use header and echo together. It's one or the other.
+    }
+?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -14,7 +27,7 @@
             <li><a href="/">Home</a></li>
             <li><a href="immobili">Proprietà</a></li>
             <li><a href="contatti">Contatti</a></li>
-            <li><a id="user-button" href="accesso">Accedi</a></li>
+            <li><a href="accesso">Accedi</a></li>
         </ul>
     </nav>
 </header>
@@ -25,13 +38,16 @@
             <p><strong>Indirizzo:</strong> Via Pietro Bucci, 87036 Arcavacata, Italia</p>
             <p><strong>Telefono:</strong> +39 06 1234567</p>
             <p><strong>Email:</strong> info@immobiliare.it</p>
+            <a href="https://www.facebook.com/salvatore.torchia.393"><img src="/css/images/logo-facebook.svg" width="50" height="50"></a>
+            <a href="https://www.instagram.com/__turii__/"><img src="/css/images/logo-instagram.svg" width="50" height="50"></a>
         </div>
+
         <form class="contact-form" action="#" method="POST">
             <div class="form-group">
                 <label for="name">Nome</label>
                 <input type="text" id="name" name="name" required>
             </div>
-            <div class="form-group">
+            <div class="form-group" >
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required>
             </div>
@@ -39,14 +55,35 @@
                 <label for="message">Messaggio</label>
                 <textarea id="message" name="message" rows="5" required></textarea>
             </div>
-            <button type="submit">Invia</button>
+            <button id="sendMailTab" type="submit" name="submit" value="invia">Invia</button>
         </form>
     </section>
 </main>
 <footer>
     <p>&copy; 2024 Immobiliare. Tutti i diritti riservati.</p>
 </footer>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/css/js/profile.js"></script>
 </body>
+<script>
+    $(document).ready(function() {
+        // Verifica lo stato di login e aggiorna il pulsante
+        function checkAndUpdateLoginStatus() {
+            $.ajax({
+                url: 'auth/checkLogin', // URL per verificare lo stato di login
+                method: 'GET',
+                success: function(response) {
+                    if (response) {
+                        // Se l'utente è loggato, cambia il testo del bottone "Accedi" in "Profilo"
+                        $('#user-button').text('Profilo');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Errore durante la verifica dello stato di login:', error);
+                }
+            });
+        }
+
+        checkAndUpdateLoginStatus(); // Chiamata alla funzione al caricamento della pagina
+    });
+</script>
+
 </html>

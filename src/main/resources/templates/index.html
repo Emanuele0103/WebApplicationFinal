@@ -18,49 +18,25 @@
         </ul>
     </nav>
 </header>
-<main>
-    <section class="box background">
-        <h1>Trova la casa dei tuoi sogni</h1>
-        <form class="search-form">
-            <label>
-                <input type="text" id="search-input" placeholder="Città, indirizzo, CAP">
-            </label>
-            <button type="submit">Cerca</button>
-        </form>
-    </section>
-    <section class="featured-properties">
-        <h2 id="property-title">Proprietà in evidenza</h2>
-        <div class="property-list" id="featured-properties-list">
-            <!-- Contenuto delle proprietà in evidenza sarà aggiunto dinamicamente qui -->
-        </div>
-        <p id="no-properties-message" style="display: none;">Nessun immobile trovato</p>
-    </section>
-    <!-- Modal per visualizzare dettagli annuncio -->
-    <div id="property-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="modal-header">
-                <h2 id="modal-title"></h2>
-            </div>
-            <div class="modal-body">
-                <div class="carousel">
-                    <button class="carousel-button prev" onclick="prevSlide()">&#10094;</button>
-                    <img class="carousel-image" id="modal-image" src="" alt="">
-                    <button class="carousel-button next" onclick="nextSlide()">&#10095;</button>
-                </div>
-                <div id="modal-description"></div>
-                <p id="modal-price"></p>
-                <p id="modal-type"></p>
-                <p id="modal-address"></p>
-            </div>
-        </div>
+<section class="box background">
+    <h1>Trova la casa dei tuoi sogni</h1>
+    <form class="search-form">
+        <label>
+            <input type="text" name="address" placeholder="Città, indirizzo, CAP">
+        </label>
+        <button type="submit">Cerca</button>
+    </form>
+</section>
+<section class="featured-properties">
+    <h2>Proprietà in evidenza</h2>
+    <div class="property-list">
+        <!-- Gli annunci casuali saranno caricati dinamicamente qui -->
     </div>
-</main>
+</section>
 <footer>
     <p>&copy; 2024 Immobiliare. Tutti i diritti riservati.</p>
 </footer>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="/css/js/randomProperties.js"></script>
-<script src="/css/js/searchProperties.js"></script>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/css/js/index.js"></script>
 </html>

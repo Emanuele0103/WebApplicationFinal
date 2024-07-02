@@ -59,7 +59,6 @@ main {
     padding: 2rem 1rem;
 }
 
-/* Sezioni delle proprietà */
 .properties-section {
     margin-bottom: 3rem;
 }
@@ -71,7 +70,6 @@ main {
     text-align: center;
 }
 
-/* Lista delle proprietà */
 .property-list {
     display: flex;
     gap: 1rem;
@@ -83,6 +81,7 @@ main {
 .property-item {
     flex: 0 0 auto;
     width: 300px;
+    max-width: 100%; /* Limita la larghezza massima */
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -90,34 +89,15 @@ main {
     margin: 0 0.5rem;
     text-align: left;
     scroll-snap-align: start;
-    position: relative; /* Aggiunto per il posizionamento del pulsante */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra leggera */
 }
 
 .property-item img {
-    width: 100%;
-    height: auto;
+    width: 100%; /* Occupa tutto lo spazio disponibile */
+    height: auto; /* Per mantenere l'aspetto proporzionato */
     display: block;
     border-radius: 8px 8px 0 0;
-}
-
-.property-item .details-button {
-    position: absolute;
-    bottom: 15px; /* Distanza dal basso */
-    left: 50%; /* Allineato centralmente */
-    transform: translateX(-50%); /* Per centrare rispetto al centro */
-    background-color: #007bff; /* Colore di sfondo del pulsante */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.property-item .details-button:hover {
-    background-color: #0056b3; /* Cambio colore al passaggio del mouse */
+    object-fit: cover; /* Riempi completamente l'area senza distorcere */
 }
 
 .property-item h3 {
@@ -154,11 +134,16 @@ main {
     border-radius: 8px;
     position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centra il contenuto */
 }
+
 .modal-content img {
-    max-width: 100%;
-    height: auto;
+    max-width: 100%; /* Immagine responsiva */
+    height: auto; /* Mantieni l'aspetto proporzionato */
+    display: block;
+    margin: 0 auto; /* Centra l'immagine */
     border-radius: 5px;
+    object-fit: contain; /* Contenimento dell'immagine */
 }
 
 .modal-content .close {
@@ -218,6 +203,7 @@ main {
 .carousel-button:hover {
     background-color: rgba(0, 0, 0, 0.7);
 }
+
 /* Footer */
 footer {
     background-color: #333;
@@ -228,15 +214,4 @@ footer {
     bottom: 0;
     left: 0;
     width: 100%;
-}
-
-/* Custom scrollbar styles */
-.property-list::-webkit-scrollbar {
-    height: 8px;
-    background-color: transparent;
-}
-
-.property-list::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 10px;
 }
